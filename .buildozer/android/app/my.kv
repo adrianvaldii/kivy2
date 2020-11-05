@@ -1,0 +1,101 @@
+WindowManager:
+    MainWindow:
+    TakePhotoWindow:
+    FileChooserWindow:
+    CountingWindow:
+
+<MainWindow>:
+    name: "main"
+    BoxLayout:
+        Button:
+            text:"Use Existing Photo"
+            on_release:
+                app.root.current = "FileChooser"
+                root.manager.transition.direction = "left"
+        Button:
+            text:"Take New Photo"
+            on_release:
+                app.root.current = "TakePhoto"
+                root.manager.transition.direction = "left"
+
+<FileChooserWindow>:
+    name: "FileChooser"
+
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            on_selection: root.selected(filechooser.selection)            
+        Image:
+            id: image
+            source: ""
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Back"
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+
+            Button:
+                text: "Select"
+                on_release: root.load(filechooser.path, filechooser.selection)                
+                #on_release: root.counting()
+
+<TakePhotoWindow>:
+    name: "TakePhoto"
+    
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        Camera:
+            id: camera
+            resolution: (720, 480)
+            play: True
+            
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Back"
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+            Button:
+                text: 'Capture'
+                on_press: root.capture()
+
+<CountingWindow>:
+    name: "Counting"
+
+    lbl_Total:lbl_Total
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Label:            
+                id: lbl_Total
+                text: "Results :"         
+        Image:
+            id: image
+            source: "D:\INOVASI IT 2020\Kivy_CountingIron\image\counting.png"
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Back"
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+            Button:
+                text: 'Counting'
+                on_press: root.counting()
+
+
